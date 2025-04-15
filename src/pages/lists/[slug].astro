@@ -1,0 +1,59 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ListView from '../../components/react/ListView';
+import prisma from '../../lib/prisma';
+
+const { slug } = Astro.params;
+
+// Fetch the list by slug
+const list = await prisma.list.findUnique({
+  where: { slug }
+});
+
+// If the list doesn't exist, return a 404
+if (!list) {
+  return Astro.redirect('/404');
+}
+
+// Fetch the URLs for this list
+const urls = await prisma.url.findMany({
+  where: { listId: list.id },
+  orderBy: { createdAt: 'desc' }
+});
+
+// Pass the data to the client via a script tag
+const initialData = {
+  list,
+  urls
+};
+---
+
+<Layout title={`${list.title} - Urlist`}>
+  <div class="max-w-6xl mx-auto">
+    <ListView client:load listId={list.id} />
+  </div>
+</Layout>
+
+<script is:inline define:vars={{ initialData }}>
+  // Initialize the stores with the server-rendered data once the DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    if (initialData && initialData.list) {
+      window.currentList = initialData.list;
+      window.listUrls = initialData.urls || [];
+    }
+  });
+</script>
+
+<script>
+  import { currentList, listUrls } from '../../stores/listStore';
+  
+  // Use the window globals set by the inline script
+  if (window.currentList) {
+    currentList.set(window.currentList);
+    listUrls.set(window.listUrls || []);
+    
+    // Clean up the global objects
+    delete window.currentList;
+    delete window.listUrls;
+  }
+</script>

@@ -9,8 +9,14 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/preact": "^4.0.9",
+    "@nanostores/persistent": "^1.0.0",
+    "@nanostores/preact": "^1.0.0",
+    "@prisma/client": "^6.6.0",
     "@tailwindcss/vite": "^4.1.4",
     "astro": "^5.7.0",
+    "preact": "^10.26.5",
+    "prisma": "^6.6.0",
     "tailwindcss": "^4.1.4"
   }
 }

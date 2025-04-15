@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ListForm from '../components/react/ListForm';
+---
+
+<Layout title="Create New List - Urlist">
+  <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Create a New List</h1>
+    
+    <ListForm client:load />
+  </div>
+
+  <script>
+    import { resetStores } from '../stores/listStore';
+    
+    // Reset all stores when the page loads
+    resetStores();
+  </script>
+</Layout>
