@@ -1,95 +1,36 @@
-# Best Practices Guide Application
+# Best Practices for AstroJS, React, Tailwind CSS, and Nanostores
 
-## Tech Stack Overview
-- Astro
-- Preact
-- Nanostores
-- Tailwind CSS
-- Postgres
+## Application Structure
 
-# Vite / React / Tailwind / Nanostores / Astro Best Practices
-This guide outlines **best practices** for building a **Vite / React / Tailwind / Nanostores / Astro** application. The goal is **readability and maintainability**, minimizing abstraction to keep the codebase clear.
-
-## 🗂️ Project Structure
-Keep a **flat and predictable** folder structure:
-
+### Project Organization
 ```
 src/
-  /components/    # Reusable UI components (buttons, inputs, cards, etc.)
-  /pages/        # Page components (mapped to routes)
-  /stores/       # Nanostores for state management
-  /hooks/        # Custom React hooks (if needed)
-  /utils/        # Simple utility functions (date formatting, API requests, etc.)
-  /assets/       # Static assets (images, icons, etc.)
-  /styles/       # Tailwind config and global CSS files (if any)
-  main.tsx      # Entry point
-  app.tsx       # Root component
-  routes.tsx    # Centralized route definitions
+├── components/
+│   ├── ui/              # Reusable UI components
+│   └── features/        # Feature-specific components
+├── layouts/             # Astro layout components
+├── pages/               # Astro pages (file-based routing)
+├── stores/              # Nanostores state management
+├── utils/               # Utility functions and helpers
+├── styles/              # Global styles and Tailwind customizations
+└── assets/              # Static assets like images, fonts
 ```
 
-📌 **Rules**:
-- **Flat is better than nested.**
-- **No generic 'helpers' folder.**
-- **Keep components close to where they are used.**
-
-## ❄ React Component Best Practices
-
-### ✅ When to Create a New Component
-
-Create a new component when:
-1. **If the JSX exceeds ~30 lines**
-   - Long components are harder to maintain and understand
-   - Breaking down large components improves readability and reusability
-
-2. **If the UI is used more than once**
-   - Reusable components reduce code duplication
-   - Makes the codebase more maintainable
-
-3. **If it has a clear single responsibility**
-   - Following the Single Responsibility Principle
-   - Each component should do one thing and do it well
-
-### Example: Component Extraction
-
-❌ **BAD: Bloated Component**
-```tsx
-export function Dashboard() {
-  return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Click Me</button>
-      <table>...</table>
-    </div>
-  );
-}
+### Feature Organization (for larger applications)
 ```
-
-✅ **GOOD: Extracted Components**
-```tsx
-export function Dashboard() {
-  return (
-    <div className="p-4">
-      <Title>Dashboard</Title>
-      <ActionButton>Click Me</ActionButton>
-      <DataTable />
-    </div>
-  );
-}
-
-// Components are broken down into smaller, focused pieces
-const Title = ({ children }) => (
-  <h1 className="text-2xl font-bold">{children}</h1>
-);
-
-const ActionButton = ({ children }) => (
-  <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
-    {children}
-  </button>
-);
-
-const DataTable = () => (
-  <table>...</table>
-);
+src/
+├── features/
+│   ├── auth/
+│   │   ├── components/  # React components specific to auth
+│   │   ├── stores/      # Auth-related nanostores
+│   │   └── utils/       # Auth-specific utilities
+│   └── products/
+│       ├── components/
+│       └── stores/
+├── shared/              # Shared components, stores, utilities
+│   ├── components/
+│   └── utils/
+└── pages/               # Astro pages using components from features
 ```
 
 ## Component Creation Guidelines
